@@ -86,7 +86,7 @@ def thresholding(image):
     return cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
 
-testnr = 'v1'
+#testnr = 'v1'
 IMG_DIR = 'images_raw/' # directory with the original images
 IMG_DIR_AFTER = 'images_processed/B&W/' #directory storing pre-processed images
 TXT_DIR = 'texts_processed/B&W/' # directory storing OCR result from the pre-processed images
@@ -107,6 +107,6 @@ for x in range(1, 21):
 
     #extract text from preprocesed image, and store in in a text file
     text = pytesseract.image_to_string(image2, config=custom_config, lang='lav')
-    sourceFile2 = open(TXT_DIR + img_name + "_B&W.txt", 'w')
+    sourceFile2 = open(TXT_DIR + img_name + "_B&W.txt", 'w', encoding='UTF-8')
     print(text, file = sourceFile2)
     sourceFile2.close()
