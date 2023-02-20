@@ -8,11 +8,11 @@ rapšu eļļa,
 sāls, 
 inaktivēts rudzu ieraugs, 
 emulgatori: 
-E471, 
-E472e; 
+e471, 
+e472e; 
 kviešu lipeklis, 
-irdinātājs E503, 
-miltu apstrādes līdzeklis E300), 
+irdinātājs e503, 
+miltu apstrādes līdzeklis e300), 
 cepta vistas gaļa 18% 
 (vistas gaļa 95%, 
 garšvielas, 
@@ -35,13 +35,13 @@ spirta etiķis,
 sāls, 
 garšvielas), 
 olu dzeltenuma pulveris, 
-skābe E260, 
+skābe e260, 
 sāls, 
 stabilizētāji: 
-E412, 
-E415, 
-E401, 
-E410; 
+e412, 
+e415, 
+e401, 
+e410; 
 glikozes sīrups), 
 marinēti gurķi 11% 
 (gurķi,

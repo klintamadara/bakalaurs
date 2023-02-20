@@ -13,7 +13,7 @@ guāra sveķi,
 karagināns;
 sausais vājpiens, 
 dabīgs aromatizētājs. 
-Sastāvdaļas piena šokolādei 22%: 
+sastāvdaļas piena šokolādei 22%: 
 cukurs, 
 kakao sviests, 
 kakao masa, 
@@ -21,9 +21,9 @@ pilnpiena pulveris,
 piena tauki, 
 emulgatori: 
 sojas lecitīni, 
-E476; 
+e476; 
 dabīgs aromatizētājs). 
-Sastāvdaļas aveņu-granātāolu mērcei 18%:
+sastāvdaļas aveņu-granātāolu mērcei 18%:
 ūdens, 
 cukurs, 
 aveņu sulas koncentrāts 5%, 
@@ -35,7 +35,7 @@ biezinātāji:
 ksantāna sveķi, 
 baltās akācijas sveķi; 
 krāsviela antocianīni. 
-Sastāvdaļas glazūrai 8%:
+sastāvdaļas glazūrai 8%:
 augu eļļas 
 (kokosriekstu, 
 rapšu sēklu),

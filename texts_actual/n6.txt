@@ -15,15 +15,15 @@ augu eļļas (palmu, rapšu),
 piena tauki), 
 saldais krējums 
 (saldais krējums, 
-emulgators: E471, 
+emulgators: e471, 
 stabilizētājs: karagināns), 
-Amber šokolāde 
+amber šokolāde 
 (cukurs, 
 kakao sviests, 
 vājpiena pulveris, 
 sūkalu pulveris, 
 piena tauki, 
-emulgators: saulespuķu Iecitīns, 
+emulgators: saulespuķu iecitīns, 
 dabīgs vaniļas aromatizētājs), 
 balzams 3% (alc. 40% tilp.), 
 rudzu rīvmaize, 

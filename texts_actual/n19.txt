@@ -1,8 +1,8 @@
 kukurūzas putraimi (52%), 
 augu eļļa 
-(saulespuķu eļļa (S)* 
-vai palmu eļļa (P)*, 
-vai rapšu eļļa (R)*), 
+(saulespuķu eļļa (s)* 
+vai palmu eļļa (p)*, 
+vai rapšu eļļa (r)*), 
 jauktas garšvielas (20%) 
 (maltodekstrīns (kukurūzas, kartupeļu), 
 sūkalu pulveris 

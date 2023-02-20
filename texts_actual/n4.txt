@@ -1,4 +1,4 @@
-atjaunots VĀJPIENS, 
+atjaunots vājpiens, 
 cukurs, 
 kakao tauki, 
 ūdens, 
@@ -7,21 +7,21 @@ mandeles,
 vājpiena pulveris, 
 glikozes sīrups, 
 glkozes-fruktozes sīrups, 
-SVIESTA eļļa, 
+sviesta eļļa, 
 sūkalu sausna 
-(PIENS), 
+(piens), 
 kakao masa, 
 emulgatori 
-(E471, 
-E442,
-E476), 
+(e471, 
+e442,
+e476), 
 ekstrahētu vaniļas pupiņu gabaliņi, 
 stabilizētāji 
 (ceratoniju augļu sveķi, 
 guāra sveķi, 
 karagināns), 
 dabīgs vaniļas aromatizētājs 
-(ar PIENU), 
+(ar pienu), 
 aromatizētājs, 
 krāsviela 
 (karotīni).

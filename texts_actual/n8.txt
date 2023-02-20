@@ -24,7 +24,7 @@ garšvielu maisījums
 (kumīns, 
 koriandrs,
 melnie pipari, 
-Alpinia galanga, 
+alpinia galanga, 
 ingvers),
 pētersīļi,
 kurkuma,

@@ -1,6 +1,6 @@
 raudzētu auzu bāze 
 (ūdens, 
-AUZAS 12%, 
+auzas 12%, 
 ierauga kultūra), 
 kartupeļu ciete, 
 rapšu eļļa, 
@@ -11,6 +11,6 @@ skābes
 (ābolskābe, 
 pienskābe), 
 jodēts sāls, 
-vitamīns D2, 
+vitamīns d2, 
 riboflavīns, 
-vitamīns B12.
+vitamīns b12.

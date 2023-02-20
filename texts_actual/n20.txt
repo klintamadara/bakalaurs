@@ -1,21 +1,21 @@
-AUNAZIRŅI 42%, 
-RAPŠU EĻĻA, 
-SEZAMA PASTA, 
-BURKĀNI, 
-ŪDENS, 
-MANGO BIEZENIS 8% 
-(MANGO 90%, 
-CUKURS), 
-KOKOSRIEKSTU PIENA PULVERIS 2% 
-(KOKOSRIEKSTU PIENS,
-MALTODEKSTRĪNS, 
-PIENA OLBALTUMVIELAS), 
-KOKOSRIEKSTI 2%, 
-CUKURS, 
-SĀLS, 
-SKĀBE E330, 
-ĶIPLOKI, 
-KONSERVANTI:
-E211, 
-E202, 
-GARŠVIELAS.
+aunazirņi 42%, 
+rapšu eļļa, 
+sezama pasta, 
+burkāni, 
+ūdens, 
+mango biezenis 8% 
+(mango 90%, 
+cukurs), 
+kokosriekstu piena pulveris 2% 
+(kokosriekstu piens,
+maltodekstrīns, 
+piena olbaltumvielas), 
+kokosrieksti 2%, 
+cukurs, 
+sāls, 
+skābe e330, 
+ķiploki, 
+konservanti:
+e211, 
+e202, 
+garšvielas.

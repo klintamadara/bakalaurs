@@ -2,7 +2,7 @@ cukurs,
 kakao masa, 
 kakao sviests, 
 kakao ar samazinātu tauku saturu, 
-emulgatori: E322 
+emulgatori: e322 
 (no sojas), 
-E476; 
+e476; 
 aromatizētājs.

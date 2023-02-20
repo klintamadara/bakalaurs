@@ -11,10 +11,10 @@ sāls,
 augu valsts šķiedrvielas, 
 aromatizētāji (satur rauga ekstraktu), 
 skābuma regulētāji: 
-E262,
-E331;
+e262,
+e331;
 sviesta pulveris,
-biezinātājs E415, 
+biezinātājs e415, 
 antioksidanti: 
 askorbīns un citronskābe, 
 dekstroze, 

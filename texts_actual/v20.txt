@@ -1,12 +1,12 @@
-AUNAZIRŅI 52%, 
-RAPŠU EĻĻA, 
-SEZAMA PASTA, 
-ŪDENS, 
-ZAĻĀS OLĪVAS 4%, 
-MELNĀS OLĪVAS 4%, 
-CITRONU SULA, 
-SĀLS, 
-ĶIPLOKI, 
-SKĀBE E330, 
-KONSERVANTI:E211,E2O2; 
-GARŠVIELAS.
+aunazirņi 52%, 
+rapšu eļļa, 
+sezama pasta, 
+ūdens, 
+zaļās olīvas 4%, 
+melnās olīvas 4%, 
+citronu sula, 
+sāls, 
+ķiploki, 
+skābe e330, 
+konservanti:e211,e2o2; 
+garšvielas.

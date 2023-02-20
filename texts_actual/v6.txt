@@ -4,18 +4,18 @@ kakao tauki,
 kakao masa, 
 glikozes sīrups, 
 kokosriekstu eļļa, 
-MANDELES, 
+mandeles, 
 glikozes-fruktozes sīrups, 
 zirņu olbaltumvielas,
 aromatizētāji, 
 emulgatori 
-(E471, 
+(e471, 
 lecitīni), 
 ekstrahētu vaniļas pupiņu gabaliņi, 
 stabilizētāji 
-(E407, 
-E410, 
-E412), 
+(e407, 
+e410, 
+e412), 
 sāls,
 krāsviela 
-(E160a).
+(e160a).
