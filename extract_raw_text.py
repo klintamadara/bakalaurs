@@ -6,8 +6,8 @@ IMG_DIR = 'images_raw/' # directory with the original images
 TXT_DIR = 'texts_raw/' # directory storing OCR result from the original images
 
 #test images from 1 to 20
-for x in range(1, 21):
-    img_name = "v" + str(x)
+for x in range(3, 4):
+    img_name = "n" + str(x)
 
     #import image
     image = cv2.imread(IMG_DIR + img_name + '.jpg')

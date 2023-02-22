@@ -6,7 +6,9 @@ vājpiena pulveris,
 glikozes sīrups, 
 sūkalu pulveris, 
 emulgators 471, 
-stabilizētāji: e410, e412, 
+stabilizētāji: 
+e410, 
+e412, 
 vaniļas pulveris, 
 vaniļas aromatizētājs,
 krāsviela e160a), 
@@ -14,7 +16,8 @@ vafele 16%
 (kviešu milti, 
 cukurs, 
 kokosa tauki, 
-emulgators e322 [sojas], 
+emulgators e322 
+[sojas], 
 dedzināts cukurs, 
 sāls), 
 kakao glazūra 10 %
@@ -22,7 +25,9 @@ kakao glazūra 10 %
 cukurs, 
 kakao pulveris ar samazinātu tauku saturu, 
 rapšu eļļa, 
-emulgatori: e322 [sojas], 
+emulgatori: 
+e322 
+[sojas], 
 e476, 
 aromatizētāji, 
 sāls), 

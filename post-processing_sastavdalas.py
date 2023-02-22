@@ -18,7 +18,7 @@ for x in range(1, 21):
     #print(content_raw)
     #print("\nPēcapstrāde:")
     #i = content_raw.find("sastāvdaļas") #finds index at which the string starts
-
+    raw_processed = content_raw
     #remove all characters before "sastāvdaļas"
     split_raw = content_raw.split("sastāvdaļas", 1)
     #print(split_raw)

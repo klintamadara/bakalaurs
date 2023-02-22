@@ -5,11 +5,14 @@ kviešu milti,
 olu baltuma masa, 
 cāļu ādas, 
 rīvmaize 
-(satur kviešus, rudzus, miežus), 
+(satur kviešus, 
+rudzus, 
+miežus), 
 krējums, 
 sāls, 
 augu valsts šķiedrvielas, 
-aromatizētāji (satur rauga ekstraktu), 
+aromatizētāji 
+(satur rauga ekstraktu), 
 skābuma regulētāji: 
 e262,
 e331;

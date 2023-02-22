@@ -1,0 +1,10 @@
+n1;23;4;olas,dzīvnieku tauki,cūku,pārklāts ar olu
+n2;43;3;sviesta aromatizētājs,sūkalu pulveris,sviesta
+n3;34;2;vājpiena pulveris,sūkalu pulveris
+n4;27;6;atjaunots vājpiens,vājpiena pulveris,sviesta eļļa,sūkalu sausna,piens,ar pienu
+n5;35;12;vājpiens,krējums,no piena,vājpiena pulveris,saldināts kondensētais vājpiens,piena olbaltumvielas,piena tauki,laktoze,sūkalu permeāts,no piena,nātrija kazeināts,no piena
+n6;44;8;piena šokolāde,pilnpiena pulveris,piena tauki,saldais krējums,saldais krējums,vājpiena pulveris,sūkalu pulveris,piena tauki
+n7;25;5;cāļa fileja,mehāniski atdalīta cāļa gaļa,olu baltuma masa,cāļu ādas,sviesta pulveris
+n8;36;1;satur olas
+n9;54;7;olu pulveris,olas vārītas,olas,vārīta desa,cūkgaļa,liellopu gaļa,olu pulveris
+n10;14;2;piens,d

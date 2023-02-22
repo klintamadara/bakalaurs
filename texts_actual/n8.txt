@@ -30,6 +30,7 @@ pētersīļi,
 kurkuma,
 melnie pipari, 
 asie pipari),
-aromatizētājs (satur olas),
+aromatizētājs 
+(satur olas),
 rauga ekstrakts,
 saulespuķu eļļa.
