@@ -5,27 +5,6 @@ import pytesseract
 #from matplotlib import pyplot as plt
 
 
-def bgremove1(myimage):
-    # Blur to image to reduce noise
-    myimage = cv2.GaussianBlur(myimage,(5,5), 0)
-    # We bin the pixels. Result will be a value 1..5
-    bins=np.array([0,51,102,153,204,255])
-    myimage[:,:,:] = np.digitize(myimage[:,:,:],bins,right=True)*51
-    # Create single channel greyscale for thresholding
-    myimage_grey = cv2.cvtColor(myimage, cv2.COLOR_BGR2GRAY)
-    # Perform Otsu thresholding and extract the background.
-    # We use Binary Threshold as we want to create an all white background
-    ret,background = cv2.threshold(myimage_grey,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-    # Convert black and white back into 3 channel greyscale
-    background = cv2.cvtColor(background, cv2.COLOR_GRAY2BGR)
-    # Perform Otsu thresholding and extract the foreground.
-    # We use TOZERO_INV as we want to keep some details of the foregorund
-    ret,foreground = cv2.threshold(myimage_grey,0,255,cv2.THRESH_TOZERO_INV+cv2.THRESH_OTSU)  #Currently foreground is only a mask
-    foreground = cv2.bitwise_and(myimage,myimage, mask=foreground)  # Update foreground with bitwise_and to extract real foreground
-    # Combine the background and foreground to obtain our final image
-    return background+foreground
-
-
 def deskew(image):
     coords = np.column_stack(np.where(image > 0))
     angle = cv2.minAreaRect(coords)[-1]
@@ -68,22 +47,12 @@ def rotate(image):
     print("[INFO] angle: {:.3f}".format(angle))
     return image
 
-# get grayscale image
-def get_grayscale(image):
-    return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 def get_blackwhite(image):
     grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     (thresh, blackAndWhiteImage) = cv2.threshold(grayImage, 127, 255, cv2.THRESH_BINARY)
     return blackAndWhiteImage
 
-# noise removal
-def remove_noise(image):
-    return cv2.medianBlur(image,5)
- 
-#thresholding
-def thresholding(image):
-    return cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
 
 #testnr = 'v1'

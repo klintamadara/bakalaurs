@@ -8,5 +8,5 @@ citronu sula,
 sāls, 
 ķiploki, 
 skābe e330, 
-konservanti:e211,e2o2; 
+konservanti:e211,e202; 
 garšvielas.

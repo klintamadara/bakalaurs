@@ -1,4 +1,5 @@
 import re
+import Levenshtein
 
 TXT_DIR_RAW = 'texts_raw/' # directory storing OCR result from the original images
 TXT_DIR_BW = 'texts_processed/B&W/' # directory storing OCR result from the pre-processed images
@@ -6,6 +7,7 @@ TXT_DIR_P2 = 'texts_processed/part2_split_ingredients' # directory storing post-
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
 TXT_DIR_RSLTS = 'results/' #directory storing all of the results
 TXT_DIR_P1 = 'texts_processed/part1/' # directory storing post-processed text -> removed before "sastāvdaļas"
+#TXT_DIR_INGR_CHECK 
 
 #prepare animal based ingredient list
 txt_file = open("list.txt", "r", encoding='UTF-8')
@@ -13,9 +15,15 @@ file_content = txt_file.read()
 list_ingredients = file_content.split("\n")
 txt_file.close()
 
+#prepare animal based ingredient check list for each product
+txt_file = open("text_actual_animal_ingr_check.txt", "r", encoding='UTF-8')
+file_content = txt_file.read()
+list_ingredients_check = file_content.split("\n") #each line format: type;nr;nr;ingredients
+txt_file.close()
+
 #prepare document in which to write
 txt_combined = open(TXT_DIR_RSLTS + "split_ingredients_comparison_all.txt", 'w', encoding='UTF-8')
-print("IMG;Nr of ingredients in the product;Ingredients in the product;Nr of ingredients identified;Ingredients identified;Nr of animal based ingredients identified;Animal based ingredients identified", 
+print("IMG;Ingr nr total - file;Ingr nr;Ingr nr identified;Ingr list;Ingr identified;Nr AB ingredients - file;Nr AB ingredients identified;AB ingr list - file;AB ingr list identified;Overlap;Missed;Extra;AB ingr overlap;AB ingr missed (only in file);False positives (ingr wrongly flagged as AB)", 
 file = txt_combined)
 
 def clean_text_get_list(text):
@@ -40,7 +48,7 @@ def clean_text_get_list(text):
 
 
 #do post-processing for images from 1 to 20 for both non-vegan and vegan products
-product_type = ["n", "v"]
+product_type = ["n","v"]
 for t in product_type:
     for x in range(1, 21):
         img_name = t + str(x)
@@ -83,9 +91,64 @@ for t in product_type:
                 for ing_animal in list_ingredients:
                     if ing_animal in ingredient:
                         list_raw_n.append(ingredient)
+                        break #one keyword found is enough, put it in the list and move on
         
-        
-        print(img_name, str(len(list_tru)), list_tru, str(len(list_raw)), list_raw, str(len(list_raw_n)), list_raw_n, sep = ";", file = txt_combined)
+        #EXTRA Levenshtein comparison (high complexity)
+        #will approve weird "ingredients" (because farther away from Latvian lan)
+        #e.g., 'kakaom rrn ppāū PIENO sikeīgi maa autoru' (n4)
+        for ingredient in list_raw:
+            if ingredient not in list_raw_n:
+                for ing_animal in list_ingredients:
+                        #'vajpiena piem o7 es adalami' -> Levenshtein is high because of all of the extra words
+                        if(Levenshtein.distance(ingredient, ing_animal) <= 1): #how similar should be?
+                            list_raw_n.append(ingredient)
+                            break
+                        else:
+                            separate_words = ingredient.split()
+                            for word in separate_words:
+                                if(Levenshtein.distance(word, ing_animal) <= 1): #how similar should be?
+                                    list_raw_n.append(ingredient)
+                                    break
+
+        list_check_ingr_n = []
+        ing_animal_overlap = []
+        ing_animal_missed = []
+        ing_animal_extra = []
+        check_nr_total = 0
+        check_nr_n = 0
+
+        #extract check data from the manually prepared file for testing
+        if(t == "v"):
+            ing_animal_extra = list_raw_n
+            list_check = list_ingredients_check[x-1+20].split(";")
+        else: #"n"
+            list_check = list_ingredients_check[x-1].split(";")
+
+        #make sure to look at the correct product(compare IDs)
+        if(list_check[0] != img_name):
+            print("Something doesn't add up. Can't check and compare animal ingredients list")
+        else:
+            check_nr_total = list_check[1] #total nr of ingredients check
+            check_nr_n = list_check[2] #nr of animal based ingredients check
+            
+            if(t == "n"):
+                list_check_ingr_n = list_check[3].split(",") #check animal based ingredient list
+                for detected_ingr in list_raw_n:
+                    if detected_ingr in list_check_ingr_n:
+                        ing_animal_overlap.append(detected_ingr)
+                    else:
+                        ing_animal_extra.append(detected_ingr)
+                for ingr in list_check_ingr_n:
+                    if(ingr not in list_raw_n):
+                        ing_animal_missed.append(ingr)
+        """
+        print(list_raw_n)
+        print(list_check_ingr_n)
+        print(ing_animal_overlap)
+        print(ing_animal_missed)
+        print(ing_animal_extra)
+        """
+        print(img_name, check_nr_total, str(len(list_tru)), str(len(list_raw)), list_tru, list_raw, check_nr_n, str(len(list_raw_n)), list_check_ingr_n, list_raw_n, str(len(ing_animal_overlap)), str(len(ing_animal_missed)), str(len(ing_animal_extra)), ing_animal_overlap, ing_animal_missed, ing_animal_extra, sep = ";", file = txt_combined)
 
 
 txt_combined.close()
