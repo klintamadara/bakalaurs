@@ -1,0 +1,42 @@
+nr; nosaukums; veikals; attēla kvalitāte (1-slikta, 3-laba); fona krāsa; burtu krāsa (ja nav melna)
+n1; maizīte piena koržiki; n; 3; balts
+n2; rudzu piparkūkas ; n; 2; zaļš
+n3; vaniļas saldējums vafeles konusā ar zemesriekstiem; Rimi; 3; zils; balts
+n4; magnum saldējums; Rimi; 1; bēšs/brūns
+n5; kokosriekstu piena saldējums; Rimi; 2; balts
+n6; lāči tumšās šokolādes konfektes; Rimi; 3; balts
+n7; cāļa fileja/ kotletes; Rimi; 2; tumši zils; balts
+n8; ātri pagatavojama makaronu zupa; n; 1; melns; balts
+n9; rasols ar desu; Maxima; 2; balts
+n10; piens ar karameļu piedevu; Rimi; 1; oranžs; melns
+n11; cāļa gaļa; Rimi; 2; zaļš, balts
+n12; nageti ar sieru; Rimi; 1; balts
+n13; sviestmaize ar vistu; Rimi; 3; oranžs
+n14; siers Maasdam; Rimi; 3; balts
+n15; siera klucis; Rimi; 1; balts
+n16; Selga cepumu bumbas piena šokolādē; Rimi; 1; tumši zils; balts
+n17; Ādažu čipsi pupiņu ar siera garšu; Rimi; 1; dzeltens
+n18; Ādažu čipsi pupiņu ar siera garšu; Rimi; 1; dzeltens
+n19; Ādažu kukurūzas bumbas ar siera garšu; Rimi; 1; dzeltens
+n20; humoss ar mango; Rimi; 1; balts
+
+v1; Veggy Crush burgeru plācenīši; Rimi; 3; melns; balts
+v2; tumšā šokolāde; Rimi; 1; tumši zils; balts
+v3; Ekselence krējuma vaniļas saldējums; Rimi; 2; zaļš
+v4; piparkūku mīkla; Rimi; 2; oranžs
+v5; popkorns ar sviesta garšu; Lidl; 3; balts
+v6; Magnum Vegan almond saldējums; Rimi; 2; balts
+v7; dārzeņu saldējums ar vafelēm; Rimi; 2; zilganbalts; tumši zils
+v8; dārzeņu saldējums ar vafelēm; Rimi; 3; zilganbalts; tumši zils
+v9; cepumi; Lidl; 3; dzeltens
+v10; humoss ar olīvām; Lidl; 3; balts
+v11; humoss ar zaļumiem; Rimi; 2; balts
+v12; koko aveņu jogurta alternatīva; Rimi; 1; pelēks
+v13; Oatly jogurts; Rimi; 3; balts
+v14; Alpro jogurts ar melleņu garšu; Rimi; 2; pelēks
+v15; mat saldā krējuma aizvietotājs; Rimi; 2; balts
+v16; Ādažu čipsi pupiņu riņķīši ar dārzeņu garšu; Rimi; 1; zilganzaļš
+v17; Ādažu čipsi pupiņu riņķīši ar dārzeņu garšu; Rimi; 2; zilganzaļš
+v18; Cido sula; Rimi; 2; zaļganraibs
+v19; Valsoia jogurti; Rimi; 3; balts
+v20; humoss ar olīvām; Rimi; 2; balts
