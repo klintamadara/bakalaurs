@@ -1,4 +1,5 @@
 import re
+import string
 import Levenshtein
 
 TXT_DIR_RAW = 'texts_raw/' # directory storing OCR result from the original images
@@ -8,6 +9,27 @@ TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingre
 TXT_DIR_RSLTS = 'results/' #directory storing all of the results
 TXT_DIR_P1 = 'texts_processed/part1/' # directory storing post-processed text -> removed before "sastāvdaļas"
 #TXT_DIR_INGR_CHECK 
+
+delimiters = ["(", ")", "[", "]", "{", "}", ":", "-", ";", "."]
+#Python delimiters: (    )    [    ]    {    }   ,    :    .    `    =    ;
+
+#what is the overlap between 2 strings? If one is subset of another, index is 1.
+def overlap_index_char(str1, str2):
+    common_chars = ''.join(sorted(set(str1) & set(str2), key = str1.index))
+    common_chars_nr = len(common_chars)
+    return common_chars_nr/min(len(str1), len(str2))
+
+#find position of the first occurence of a delimiter in a string
+def find_end(str):
+    end = float('inf')
+    for char in delimiters:
+        position = str.find(char)
+        if(position < end and position != -1):
+            end = position
+    if(end == float('inf')):
+        end = -1
+    return end
+
 
 #prepare animal based ingredient list
 txt_file = open("list.txt", "r", encoding='UTF-8')
@@ -29,23 +51,13 @@ file = txt_combined)
 def clean_text_get_list(text):
     processed = re.sub("\d*[.,]?\d*\s*%", "", text) #remove 2,3% , 1.5 % utt.
 
-    processed = processed.replace("(", ",")
-    processed = processed.replace(")", ",")
-    processed = processed.replace("[", ",")
-    processed = processed.replace("]", ",")
-    processed = processed.replace("{", ",")
-    processed = processed.replace("}", ",")
-    processed = processed.replace(":", ",")
-    processed = processed.replace("-", ",")
-    processed = processed.replace(";", ",")
-    processed = processed.replace(".", ",")
+    for char in delimiters:
+        processed = processed.replace(char, ",")
 
     processed = processed.replace("-\n", "") #ignore "pārnesumi jaunā rindā"
     processed = processed.replace("–\n", "") #ignore "pārnesumi jaunā rindā"
     processed = processed.replace("\n", "") #ignore new lines
-    #"^\d*[.,]?\d*\s*%$"mg
-    #"\d*[.,]?\d*\s*%"mg
-    #Python delimiters: (    )    [    ]    {    }   ,    :    .    `    =    ;
+
     list_tru = processed.split(',') #make a list of all ingredients
     list_tru = [s.strip() for s in list_tru if s != '' and s!= ' '] #remove extra spaces
     #print(list_tru)
@@ -53,9 +65,9 @@ def clean_text_get_list(text):
 
 
 #do post-processing for images from 1 to 20 for both non-vegan and vegan products
-product_type = ["n","v"]
+product_type = ["n"]#,"v"]
 for t in product_type:
-    for x in range(1, 21):
+    for x in range(1, 2):
         img_name = t + str(x)
         #print("\n" + img_name)
 
@@ -72,36 +84,87 @@ for t in product_type:
         raw_processed = str.lower(content_raw)
         #i = content_raw.find("sastāvdaļas") #finds index at which the string starts
 
-        #remove all characters before "sastāvdaļas" or sastāvs
-        split_raw = raw_processed.split("sastāvdaļas", 1)
-        if len(split_raw) > 1: 
-            raw_processed = split_raw[1]
+        #!!!!!!!!!!!!!!!!!!!
+        raw_processed = "bez piena; kviešu milti, ogas, laktozelaktozes; ūdens, sāls"
 
+        #FEATURE POST-PR: remove all characters before "sastāvdaļas" or sastāvs
+        beginning = ""
+        #split text for processing, removing all punctuation signs first,
+        #if there are any on the beginning or end of the words
+        all_words_identified = [word.strip(string.punctuation) for word in raw_processed.split()]
+        #iterate over all words
+        for word in all_words_identified:
+            if(word == "x   sastāvdaļas" or word == "sastāvs"):
+                beginning = word
+        if(beginning == ""): #identical match has not been found
+            for word in all_words_identified: #do similarity check - if similar enough, assume it is the beginning of ingredient list
+                if(Levenshtein.distance(word, "sastāvdaļas") <= 1):
+                    beginning = word
+                elif(Levenshtein.distance(word, "sastāvs") <= 1):
+                    beginning = word
+        if(beginning != ""): #beginning of ingredient list has been identified
+            split_raw = raw_processed.split(beginning, 1) #remove everything before that
+            raw_processed = split_raw[1]
+        
+        #FEATURE POST-PR. common OCR error -> E numbers identified as a numerical value (E = 6). Fixing that
+        for word in all_words_identified:
+            if(word.isdigit()):
+                number = int(word)
+                if(number >= 6100 and number <= 61999):
+                    new_E = "e" + str(number - 6000)
+                    raw_processed = raw_processed.replace(word, new_E)
+
+        #FEATURE POST-PR. Exception handling. When mentions of animal based ingredients should be ignored
+        exact_match_exception = ["bez", "nav"]
+        for exception in exact_match_exception: #assess each exception key word
+            if exception in all_words_identified: #if present in the text
+                position = raw_processed.find(exception) #where it is located in the string
+                #remove it while it exists in the string as a word (not within a word, e.g., "bezdibenis")
+                while(position > -1 and raw_processed[position - 1].isalpha() == False and raw_processed[position + len(exception)].isalpha() == False):
+                    split_exc = raw_processed.split(exception, 1) #remove everything before that
+                    tail = split_exc[1] #locate and find where the related words (AB ingredients) end
+                    end_delimiter = find_end(tail)
+                    split_tail_list = tail.split(tail[end_delimiter - 1],1) #split so that delimiter is kept
+                    split_tail = split_tail_list[1]
+                    raw_processed = split_exc[0] + split_tail
+                    position = raw_processed.find(exception)
+        
+        print(raw_processed)
+
+        """
+        if(overlap_index_char(" bez ", raw_processed) == 1):
+            split_ = raw_processed.split(" bez ", 1) #remove everything before that
+            raw_processed = split_raw[1]
+            find_end
+        """
         """
         #todo: delete everything after until a stop (., \n)
         split_raw = raw_processed.split("var saturēt", 1)
         if len(split_raw) > 1: 
             raw_processed = split_raw[0]
         """
+        #SPLITTING into a list of ingredients
         list_raw = clean_text_get_list(raw_processed)
 
-        #animal based ingredient list included in the product
-        list_raw_n = []
+        #DELETE list_raw = ["piens", "ogas", "pienskābe", "cāļa", "kviešu milti", "piena pulveris", "baltums olu"]
+        
+        list_raw_n = [] #animal based ingredient identified in the product
         #loop through all ingredients and check if they are animal based
         for ingredient in list_raw:
             if ingredient in list_ingredients:
                 list_raw_n.append(ingredient)
-            #extra: ingredient contains animal product within
-            else:
-                for ing_animal in list_ingredients:
-                    if ing_animal in ingredient:
+            else: #ingredient contains animal product keyword within -> also counts
+                separate_ingredients = [word.strip(string.punctuation) for word in ingredient.split()]
+                for word in separate_ingredients:
+                    if word in list_ingredients:
                         list_raw_n.append(ingredient)
                         break #one keyword found is enough, put it in the list and move on
-        
+
+        """
         #EXTRA Levenshtein comparison (high complexity)
-        #will approve weird "ingredients" (because farther away from Latvian lan)
+        #will approve weird "ingredients" (because farther away from Latvian lang)
         #e.g., 'kakaom rrn ppāū PIENO sikeīgi maa autoru' (n4)
-        for ingredient in list_raw:
+        for ingredient in list_raw: #each identified ingredient
             if ingredient not in list_raw_n:
                 for ing_animal in list_ingredients:
                         #'vajpiena piem o7 es adalami' -> Levenshtein is high because of all of the extra words
@@ -114,6 +177,7 @@ for t in product_type:
                                 if(Levenshtein.distance(word, ing_animal) <= 1): #how similar should be?
                                     list_raw_n.append(ingredient)
                                     break
+        """
 
         list_check_ingr_n = []
         ing_animal_overlap = []
@@ -125,7 +189,7 @@ for t in product_type:
         #extract check data from the manually prepared file for testing
         if(t == "v"):
             ing_animal_extra = list_raw_n
-            list_check = list_ingredients_check[x-1+20].split(";")
+            list_check = list_ingredients_check[x+50].split(";")
         else: #"n"
             list_check = list_ingredients_check[x-1].split(";")
 
@@ -157,29 +221,3 @@ for t in product_type:
 
 
 txt_combined.close()
-
-"""
-        #remove first character if it is ":"
-        if raw_processed[0] == ':':
-            raw_processed = raw_processed[1:]
-
-        
-    
-"""
-
-"""
-        #print(list_tru)
-        print("Nr of ingredients in the product:" + str(len(list_tru)))
-        print("Ingredients in the product: ", *list_tru, sep = ",")
-        print("Nr of ingredients identified: " + str(len(list_raw)))
-        #print("All ingredients identified: ", *list_raw, sep = ",")
-        print("Nr of animal based ingredients identified: " + str(len(list_raw_n)))
-        #print(*list_raw_n, sep = ",")
-        #print("Animal based ingredients: " + list_raw_n)
-        #print(list_raw_n)
-        #print(list_raw)
-        """
-
-        #print(img_name, ";", str(len(list_tru)), ";", *list_tru, ";", str(len(list_raw)), ";", *list_raw, ";", str(len(list_raw_n)), ";", *list_raw_n, sep = ",", file = txt_combined)
-        #print(img_name, ";", str(len(list_tru)), ";", list_tru, ";", str(len(list_raw)), ";", list_raw, ";", str(len(list_raw_n)), ";", list_raw_n, file = txt_combined)
-        

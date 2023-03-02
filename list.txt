@@ -49,6 +49,7 @@ olu baltuma masa
 olu dzeltenums
 olu pulveris
 pasterizēts govs piens
+piena
 piena tauki
 piens
 pilnpiena
