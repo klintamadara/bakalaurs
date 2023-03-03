@@ -1,6 +1,24 @@
 # bakalaurs
 private
 
+post-processing_no:
+no post prociessing
+
+post-processing_all:
+exact match
+
+post-processing_all_1:
+Levenshtein 1
+
+post-processing_all_2:
+Levenshtein <= 25% no vārda
+
+What:
+- saturēt, nesatur
+- AB ingredients
+- koko sviests utt.
+- sastāvdaļas?
+
 Mērķis: noteikt OCR precizitāti produktu sastāvdaļu nolasīšanā. 
 
 

@@ -3,7 +3,7 @@ import string
 
 TXT_DIR_RAW = 'texts_raw/' # directory storing OCR result from the original images
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
-TXT_DIR_RSLTS = 'results/post-processing_all.txt' #location storing all of the results
+TXT_DIR_RSLTS = 'results/post-processing_no.txt' #location storing all of the results
 
 #prepare animal based ingredient list
 txt_file = open("list.txt", "r", encoding='UTF-8')
@@ -56,65 +56,8 @@ for t in product_type:
         txt_raw.close()
         raw_processed = str.lower(content_raw)
 
-        raw_processed = raw_processed.replace("]", ")")
-        raw_processed = raw_processed.replace("[", "(")
-
-        #FEATURE POST-PR: remove all characters before "sastāvdaļas" or sastāvs
-        beginning = ""
-        #split text for processing, removing all punctuation signs first,
-        #if there are any on the beginning or end of the words
-        all_words_identified = [word.strip(string.punctuation) for word in raw_processed.split()]
-        #iterate over all words
-        for word in all_words_identified:
-            if(word == "sastāvdaļas" or word == "sastāvs"):
-                beginning = word
-        if(beginning != ""): #beginning of ingredient list has been identified
-            split_raw = raw_processed.split(beginning, 1) #remove everything before that
-            if len(split_raw) > 1: 
-                raw_processed = split_raw[1]
-            else:
-                raw_processed = split_raw[0]
-        
-        #FEATURE POST-PR. common OCR error -> E numbers identified as a numerical value (E = 6). Fixing that
-        for word in all_words_identified:
-            if(word.isdigit()):
-                number = int(word)
-                if(number >= 6100 and number <= 61999):
-                    new_E = "e" + str(number - 6000)
-                    raw_processed = raw_processed.replace(word, new_E)
-
-        #FEATURE POST-PR. Exception handling. When mentions of animal based ingredients should be ignored
-        exact_match_exception = ["bez", "nav", "saturēt", "nesatur"]
-        for exception in exact_match_exception: #assess each exception key word
-            if exception in all_words_identified: #if present in the text
-                raw_processed = re.sub("\s*" + exception + "[^;.{}():-]*", "", raw_processed) #remove the whole word. Includes, e.g., "kokosriekstu piens"
-
-        #FEATURE POST-PR. Exception handling. When mentions of animal based ingredients should be ignored
-        exact_match_exception_ing = ["kakao sviests", "riekstu sviests", "riekstu piens", "zirņu piens"]
-        for exception in exact_match_exception_ing: #assess each exception key word
-            if exception in raw_processed: #if present in the text
-                raw_processed = re.sub("\w*" + exception + "\w*", "", raw_processed) #remove the whole word. Includes, e.g., "kokosriekstu piens"
-
         #SPLITTING into a list of ingredients
         list_raw = clean_text_get_list(raw_processed)
-
-        """
-        #FEATURE POST-PR. Exception handling. When mentions of animal based ingredients should be ignored
-        exact_match_exception_ing = ["kakao sviests", "riekstu sviests", "riekstu piens", "zirņu piens"]
-        for exception in exact_match_exception_ing: #assess each exception key word
-            if exception in raw_processed: #if present in the text
-                list_raw.remove(exception)
-        #loop through all ingredients and check if they are exceptions
-        for ingredient in list_raw:
-            if ingredient in exact_match_exception_ing:
-                list_raw.remove(exception)
-            else: #ingredient contains exception within -> also counts
-                for keyword in exact_match_exception_ing:
-                    if keyword in ingredient:
-                        list_raw.remove(exception)
-                        break #one keyword found is enough, put it in the list and move on
-        """
-
         
         list_raw_n = [] #animal based ingredient identified in the product
         #loop through all ingredients and check if they are animal based

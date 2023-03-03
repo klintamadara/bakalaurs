@@ -1,3 +1,20 @@
+#what is the overlap between 2 strings? If one is subset of another, index is 1.
+def overlap_index_char(str1, str2):
+    common_chars = set(str1).intersection(str2)
+    common_chars_nr = len(common_chars)
+    print("Overlap:")
+    print(common_chars_nr/min(len(str1), len(str2)))
+    return common_chars_nr/min(len(str1), len(str2))
+"""
+def overlap_index_char(str1, str2):
+    common_chars = ''.join(sorted(set(str1) & set(str2), key = str1.index))
+    common_chars_nr = len(common_chars)
+    print("Overlap:")
+    print(common_chars_nr/min(len(str1), len(str2)))
+    return common_chars_nr/min(len(str1), len(str2))
+"""
+
+
 TXT_DIR_RAW = 'texts_raw/' # directory storing OCR result from the original images
 TXT_DIR_BW = 'texts_processed/B&W/' # directory storing OCR result from the pre-processed images
 #TXT_DIR_ING = 'texts_processed/ingredients/' # directory storing post-processed text -> removed before "sastāvdaļas"
