@@ -30,6 +30,55 @@ def find_end(str):
         end = -1
     return end
 
+def delete_occurences(raw_processed, exception):
+    position = raw_processed.find(exception) #where it is located in the string
+    #remove it while it exists in the string as a word (not within a word, e.g., "bezdibenis")
+    if(position == 0):
+        char_before = ""
+    else:
+        char_before = raw_processed[position - 1]
+    if(position + len(exception) >= len(raw_processed)):
+        char_after = ""
+    else:
+        char_after = raw_processed[position + len(exception)]
+    print(exception)
+    print(position)
+    print(char_before.isalpha())
+    print(char_after.isalpha())
+    while((position > -1 and char_before.isalpha() == False and char_after.isalpha() == False)):
+        print("yess")
+        split_exc = raw_processed.split(exception, 1) #remove everything before that
+        #locate and find where the related words (AB ingredients) end
+        if len(split_exc) > 1: 
+            tail = split_exc[1]
+        else:
+            tail = split_exc[0] #exception key word was the first (or last?) word in the string
+        end_delimiter = find_end(tail)
+        if(end_delimiter == -1 or end_delimiter == 0): #couldn't find an appropriate delimiter or it was the first char, i.e., everything after key word is assumed to be relevant (dismissable)
+            raw_processed = split_exc[0]
+        else:
+            split_tail_list = tail.split(tail[end_delimiter - 1],1) #split so that delimiter is kept
+            if len(split_tail_list) > 1: 
+                split_tail = split_tail_list[1]
+            else:
+                split_tail = split_tail_list[0]
+            raw_processed = split_exc[0] + split_tail #combine info before and after the exception
+        position = raw_processed.find(exception) #find next occurence
+        if(position == -1): #no more occurences
+            break
+        elif(position == 0): #in the beginning, no char before the key word
+            char_before = ""
+        else:
+            char_before = raw_processed[position - 1]
+        if(position + len(exception) >= len(raw_processed)): #key word at the end
+            char_after = ""
+        else:
+            char_after = raw_processed[position + len(exception)]
+    return raw_processed
+
+
+
+
 
 #prepare animal based ingredient list
 txt_file = open("list.txt", "r", encoding='UTF-8')
@@ -85,7 +134,7 @@ for t in product_type:
         #i = content_raw.find("sastāvdaļas") #finds index at which the string starts
 
         #!!!!!!!!!!!!!!!!!!!
-        raw_processed = "bez piena; kviešu milti, ogas, laktozelaktozes; ūdens, sāls"
+        raw_processed = "cukurs, olbaltums, milti. Var saturēt kakao. piens"
 
         #FEATURE POST-PR: remove all characters before "sastāvdaļas" or sastāvs
         beginning = ""
@@ -118,18 +167,17 @@ for t in product_type:
         exact_match_exception = ["bez", "nav"]
         for exception in exact_match_exception: #assess each exception key word
             if exception in all_words_identified: #if present in the text
-                position = raw_processed.find(exception) #where it is located in the string
-                #remove it while it exists in the string as a word (not within a word, e.g., "bezdibenis")
-                while(position > -1 and raw_processed[position - 1].isalpha() == False and raw_processed[position + len(exception)].isalpha() == False):
-                    split_exc = raw_processed.split(exception, 1) #remove everything before that
-                    tail = split_exc[1] #locate and find where the related words (AB ingredients) end
-                    end_delimiter = find_end(tail)
-                    split_tail_list = tail.split(tail[end_delimiter - 1],1) #split so that delimiter is kept
-                    split_tail = split_tail_list[1]
-                    raw_processed = split_exc[0] + split_tail
-                    position = raw_processed.find(exception)
+                raw_processed = delete_occurences(raw_processed, exception)
         
+        approx_match_exception = ["Var saturēt", "nesatur"]
+        for exception in approx_match_exception:
+            if(overlap_index_char(exception, raw_processed) >= 0.85):
+                print()
+                print("yes")
+                raw_processed = delete_occurences(raw_processed, exception)
+
         print(raw_processed)
+
 
         """
         if(overlap_index_char(" bez ", raw_processed) == 1):
