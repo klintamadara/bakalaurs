@@ -90,7 +90,7 @@ for t in product_type:
                 raw_processed = re.sub("\s*" + exception + "[^;.{}():-]*", "", raw_processed) #remove the whole word. Includes, e.g., "kokosriekstu piens"
 
         #FEATURE POST-PR. Exception handling. When mentions of animal based ingredients should be ignored
-        exact_match_exception_ing = ["kakao sviests", "riekstu sviests", "riekstu piens", "zirņu piens"]
+        exact_match_exception_ing = ["kakao sviests", "riekstu sviests", "riekstu piens", "zirņu piens", "cūku pupas"]
         for exception in exact_match_exception_ing: #assess each exception key word
             if exception in raw_processed: #if present in the text
                 raw_processed = re.sub("\w*" + exception + "\w*", "", raw_processed) #remove the whole word. Includes, e.g., "kokosriekstu piens"

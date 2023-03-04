@@ -16,8 +16,8 @@ vafele 16%
 (kviešu milti, 
 cukurs, 
 kokosa tauki, 
-emulgators e322 
-[sojas], 
+emulgators e322 [
+sojas], 
 dedzināts cukurs, 
 sāls), 
 kakao glazūra 10 %
@@ -26,8 +26,8 @@ cukurs,
 kakao pulveris ar samazinātu tauku saturu, 
 rapšu eļļa, 
 emulgatori: 
-e322 
-[sojas], 
+e322 [
+sojas], 
 e476, 
 aromatizētāji, 
 sāls), 

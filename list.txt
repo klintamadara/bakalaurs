@@ -1,4 +1,5 @@
 aitas
+albumīns
 asinis
 biezpiens
 biezpiena
@@ -25,6 +26,7 @@ gaļa
 gī
 glicerīns
 govs
+harengus
 hematogēns
 holesterīns
 isinglass
@@ -35,16 +37,21 @@ kazeināts
 kazeīns
 konditorejas glazūra
 košenils
+krējuma
 krējums
 laktoze
 laktozi
+liellopa
 liellopu
 liellopu gaļa
 lipāze
+medū
 medus
 olas
+olām
 olu
 olu baltums
+olu baltuma
 olu baltuma masa
 olu dzeltenums
 olu pulveris
@@ -54,6 +61,7 @@ piena tauki
 piens
 pilnpiena
 pilnpiena pulveris
+renīns
 rennets
 retinols
 saldais krējums
@@ -72,6 +80,7 @@ sviesta eļļa
 sviesta pulveris
 sviests
 šellaka
+tīrkultūra
 vājpiens
 vājpiena
 vājpiena pulveris
