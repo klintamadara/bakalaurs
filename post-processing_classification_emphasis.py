@@ -7,7 +7,6 @@ TXT_DIR_P2 = 'texts_processed/part2_split_ingredients' # directory storing post-
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
 TXT_DIR_RSLTS = 'results/' #directory storing all of the results
 TXT_DIR_P1 = 'texts_processed/part1/' # directory storing post-processed text -> removed before "sastāvdaļas"
-#TXT_DIR_INGR_CHECK 
 
 #prepare animal based ingredient list
 txt_file = open("list.txt", "r", encoding='UTF-8')
@@ -43,12 +42,9 @@ def clean_text_get_list(text):
     processed = processed.replace("-\n", "") #ignore "pārnesumi jaunā rindā"
     processed = processed.replace("–\n", "") #ignore "pārnesumi jaunā rindā"
     processed = processed.replace("\n", "") #ignore new lines
-    #"^\d*[.,]?\d*\s*%$"mg
-    #"\d*[.,]?\d*\s*%"mg
-    #Python delimiters: (    )    [    ]    {    }   ,    :    .    `    =    ;
+
     list_tru = processed.split(',') #make a list of all ingredients
     list_tru = [s.strip() for s in list_tru if s != '' and s!= ' '] #remove extra spaces
-    #print(list_tru)
     return list_tru
 
 

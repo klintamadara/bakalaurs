@@ -188,14 +188,13 @@ for t in product_type:
             
             if(t == "n"):
                 list_check_ingr_n = list_check[3].split(",") #check animal based ingredient list
+                ing_animal_missed = list_check_ingr_n
                 for detected_ingr in list_raw_n:
                     if detected_ingr in list_check_ingr_n:
                         ing_animal_overlap.append(detected_ingr)
+                        ing_animal_missed.remove(detected_ingr)
                     else:
                         ing_animal_extra.append(detected_ingr)
-                for ingr in list_check_ingr_n:
-                    if(ingr not in list_raw_n):
-                        ing_animal_missed.append(ingr)
        
         print(img_name, check_nr_total, str(len(list_tru)), str(len(list_raw)), list_tru, list_raw, check_nr_n, str(len(list_raw_n)), list_check_ingr_n, list_raw_n, str(len(ing_animal_overlap)), str(len(ing_animal_missed)), str(len(ing_animal_extra)), ing_animal_overlap, ing_animal_missed, ing_animal_extra, sep = ";", file = txt_combined)
 
