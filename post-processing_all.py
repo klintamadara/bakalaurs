@@ -32,6 +32,7 @@ def clean_text_get_list(text):
     processed = processed.replace("-\n", "") #ignore "pārnesumi jaunā rindā"
     processed = processed.replace("–\n", "") #ignore "pārnesumi jaunā rindā"
     processed = processed.replace("\n", "") #ignore new lines
+    processed = processed.replace("*", "") #ignore new lines
 
     list_tru = processed.split(',') #make a list of all ingredients
     list_tru = [s.strip() for s in list_tru if s != '' and s!= ' '] #remove extra spaces
@@ -46,7 +47,7 @@ for t in product_type:
 
         #prepare the actual ingredients list for testing purposes
         txt_tru = open(TXT_DIR_TRU + img_name + ".txt", "r", encoding='UTF-8')
-        content_tru = txt_tru.read()
+        content_tru = str.lower(txt_tru.read()) #lowercase
         txt_tru.close()
         list_tru = clean_text_get_list(content_tru)
 
@@ -97,24 +98,6 @@ for t in product_type:
 
         #SPLITTING into a list of ingredients
         list_raw = clean_text_get_list(raw_processed)
-
-        """
-        #FEATURE POST-PR. Exception handling. When mentions of animal based ingredients should be ignored
-        exact_match_exception_ing = ["kakao sviests", "riekstu sviests", "riekstu piens", "zirņu piens"]
-        for exception in exact_match_exception_ing: #assess each exception key word
-            if exception in raw_processed: #if present in the text
-                list_raw.remove(exception)
-        #loop through all ingredients and check if they are exceptions
-        for ingredient in list_raw:
-            if ingredient in exact_match_exception_ing:
-                list_raw.remove(exception)
-            else: #ingredient contains exception within -> also counts
-                for keyword in exact_match_exception_ing:
-                    if keyword in ingredient:
-                        list_raw.remove(exception)
-                        break #one keyword found is enough, put it in the list and move on
-        """
-
         
         list_raw_n = [] #animal based ingredient identified in the product
         #loop through all ingredients and check if they are animal based

@@ -4,9 +4,9 @@ import Levenshtein
 
 TXT_DIR_RAW = 'texts_raw/' # directory storing OCR result from the original images
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
-TXT_DIR_RSLTS = 'results/post-processing_all_2.txt' #location storing all of the results
+TXT_DIR_RSLTS = 'results/post-processing_all_25%.txt' #location storing all of the results
 
-LEV_limit = 25 #max difference, percentage (Levenshtein distance compared to the length of the string)
+LEV_limit = 0.25 #max difference, percentage (Levenshtein distance compared to the length of the string)
 
 #prepare animal based ingredient list
 txt_file = open("list.txt", "r", encoding='UTF-8')
@@ -35,9 +35,16 @@ def clean_text_get_list(text):
     processed = processed.replace("-\n", "") #ignore "pārnesumi jaunā rindā"
     processed = processed.replace("–\n", "") #ignore "pārnesumi jaunā rindā"
     processed = processed.replace("\n", "") #ignore new lines
+    processed = processed.replace("*", "") #ignore asterisks
 
     list_tru = processed.split(',') #make a list of all ingredients
     list_tru = [s.strip() for s in list_tru if s != '' and s!= ' '] #remove extra spaces
+    #remove empty ingredients
+    try:
+        while True:
+            list_tru.remove("")
+    except ValueError:
+        pass
     return list_tru
 
 
@@ -49,7 +56,7 @@ for t in product_type:
 
         #prepare the actual ingredients list for testing purposes
         txt_tru = open(TXT_DIR_TRU + img_name + ".txt", "r", encoding='UTF-8')
-        content_tru = txt_tru.read()
+        content_tru = str.lower(txt_tru.read()) #lowercase
         txt_tru.close()
         list_tru = clean_text_get_list(content_tru)
 
@@ -59,8 +66,10 @@ for t in product_type:
         txt_raw.close()
         raw_processed = str.lower(content_raw)
 
-        raw_processed = raw_processed.replace("]", ")")
-        raw_processed = raw_processed.replace("[", "(")
+        raw_processed = raw_processed.replace("]", "}")
+        raw_processed = raw_processed.replace("[", "{")
+        raw_processed = raw_processed.replace(")", "}")
+        raw_processed = raw_processed.replace("(", "{")
 
         #POST-PR: remove all characters before "sastāvdaļas" or sastāvs
         beginning = ""
@@ -105,13 +114,12 @@ for t in product_type:
                 if(Levenshtein.distance(word, exception) /len(exception) <= LEV_limit):
                     raw_processed = re.sub("\s*" + word + "[^;.{}():-]*", "", raw_processed) #remove the whole word. Includes, e.g., "kokosriekstu piens"
 
+        exact_match_exception_ing = ["kakao sviests", "riekstu sviests", "riekstu piens", "zirņu piens", "cūku pupas"]
 
         #POST-PR. Exception handling. When mentions of animal based ingredients should be ignored
-        exact_match_exception_ing = ["kakao sviests", "riekstu sviests", "riekstu piens", "zirņu piens", "cūku pupas"]
         for exception in exact_match_exception_ing: #assess each exception key word
             if exception in raw_processed: #if present in the text
                 raw_processed = re.sub("\w*" + exception + "\w*", "", raw_processed) #remove the whole word. Includes, e.g., "kokosriekstu piens"
-
 
         #SPLITTING into a list of ingredients
         list_raw = clean_text_get_list(raw_processed)
@@ -121,7 +129,7 @@ for t in product_type:
         for ingredient in list_raw:
             for exception in exact_match_exception_ing:
                 if(Levenshtein.distance(ingredient, exception) /len(exception) <= LEV_limit):
-                    list_raw.remove(exception)
+                    list_raw.remove(ingredient)
 
 
         #FEATURE
@@ -148,7 +156,8 @@ for t in product_type:
                             list_raw_n.append(ingredient)
                             break
                         else:
-                            separate_words = ingredient.split()
+                            separate_words = [word.strip(string.punctuation) for word in ingredient.split()]
+                            separate_words = [s.strip() for s in separate_words if s != '' and s!= ' '] #remove extra spaces
                             for word in separate_words:
                                 if(Levenshtein.distance(word, ing_animal) /len(word) <= LEV_limit): #how similar should be?
                                     list_raw_n.append(ingredient)
@@ -164,13 +173,15 @@ for t in product_type:
         #extract check data from the manually prepared file for testing
         if(t == "v"):
             ing_animal_extra = list_raw_n
-            list_check = list_ingredients_check[x+50].split(";")
+            list_check = list_ingredients_check[x+100].split(";")
         else: #"n"
             list_check = list_ingredients_check[x].split(";")
 
         #make sure to look at the correct product(compare IDs)
         if(list_check[0] != img_name):
-            print("Something doesn't add up. Can't check and compare animal ingredients list")
+            print("Something doesn't add up. Can't check and compare animal ingredients list because samples are given different")
+            print(list_check[0])
+            print(img_name)
         else:
             check_nr_total = list_check[1] #total nr of ingredients check
             check_nr_n = list_check[2] #nr of animal based ingredients check

@@ -64,10 +64,10 @@ n62;42;2;laktoze,piens
 n63;29;1;piena obaltumvielas
 n64;15;2;liellopa gaļa,cūkgaļa
 n65;12;7;piens,krējums,siera pulveris,no cietā siera,zilā siera,Čedaras,mocarella
-n66;;;
-n67;;;
-n68;;;
-n69;;;
+n66;21;2;olu dzeltenuma pulveris,piena pulveris
+n67;10;2;siera pulveris,no piena
+n68;11;2;vājpiena pulveris,sūkalu pulveris
+n69;19;3;satur piena produktus,saldo sūkalu pulveris,siera pulveris
 n70;53;2;medū grauzdēti zemesrieksti,medus
 n71;26;6;vājpiena pulveris,sūkalu pulveris,no PIENA,laktoze,no PIENA,piena tauki
 n72;24;3;vājpiena pulveris,laktoze,no PIENA
@@ -84,18 +84,18 @@ n82;22;3;salds sūkalu,piens,piena cukurs
 n83;20;2;olu pulveris,sūkalu pulveris
 n84;12;2;olu baltuma pulveris,albumīns
 n85;17;1;piena olbaltumvielas
-n86;;;
-n87;;;
-n88;;;
-n89;;;
-n90;;;
-n91;;;
-n92;;;
-n93;;;
-n94;;;
-n95;;;
-n96;;;
-n97;;;
+n86;25;8;krējuma pulveris,no piena,siera pulveris,no piena,vājpiena pulveris,ar pienu,sūkalu pulveris,no piena
+n87;21;3;olas,mājputnu tauki,kaltēta vistas gaļa
+n88;24;1;kūpināti cūku tauki
+n89;25;3;pilnpiena pulveris,vājpiena puveris,ar pienu
+n90;13;5;pilnpiena pulveris,sūkalu pulveris,no piena,vājpiena pulveris,piena tauki
+n91;11;4;pilnpiena pulveris,sūkalu pulveris,no piena,piena tauki
+n92;8;1;piena tauki
+n93;17;4;piena šokolāde,pilnpiena ulveris,vājpiena pulveris,bezūdens piena tauki
+n94;22;6;vājpiena pulveris,iebiezināts vājpiens,iebiezinātas sūkalas,laktoze,sviests,sūkalu produkts
+n95;14;3;iebiezināts piens ar cukuru,piens,olu pulveris
+n96;21;1;pilnpiena pulveris
+n97;16;4;sausās sūkalas,sviests,no piena,olu pulveris
 n98;13;2;vistas tauki,vistas gaļas pulveris
 n99;22;2;vistas gaļa,vista
 n100;23;2;vistas gaļa,vista
