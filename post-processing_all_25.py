@@ -2,9 +2,15 @@ import re
 import string
 import Levenshtein
 
-TXT_DIR_RAW = 'texts_raw/' # directory storing OCR result from the original images
+def overlap_coefficient(x,y):
+    z=set(x).intersection(set(y))
+    a=float(len(z))/min(len(x),len(y))
+    return a
+overlap_coefficient_rate = 1
+
+TXT_DIR_RAW = 'texts_processed/GS/' # directory storing OCR result from the original images
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
-TXT_DIR_RSLTS = 'results/post-processing_all_25%_psm6.txt' #location storing all of the results
+TXT_DIR_RSLTS = 'results/post-processing_25%_GS_FINAL.txt' #location storing all of the results
 
 LEV_limit = 0.25 #max difference, percentage (Levenshtein distance compared to the length of the string)
 
@@ -46,7 +52,6 @@ def clean_text_get_list(text):
     except ValueError:
         pass
     return list_tru
-
 
 #do post-processing for images from 1 to 20 for both non-vegan and vegan products
 product_type = ["n","v"]
@@ -131,20 +136,34 @@ for t in product_type:
                 if(Levenshtein.distance(ingredient, exception) /len(exception) <= LEV_limit):
                     list_raw.remove(ingredient)
 
-
         #FEATURE
-        list_raw_n = [] #animal based ingredient identified in the product
+        list_raw_n = [] #animal based ingredients identified in the product
+        list_similars = [] #list of tuples when match is <100% - (ing identified, animal based ingredient from the check list)
         #loop through all ingredients and check if they are animal based
         for ingredient in list_raw:
             if ingredient in list_ingredients:
                 list_raw_n.append(ingredient)
             else: #ingredient contains animal product keyword within -> also counts
                 separate_ingredients = [word.strip(string.punctuation) for word in ingredient.split()]
+                separate_ingredients = [s.strip() for s in separate_ingredients if s != '' and s!= ' '] #remove extra spaces
+                if(len(separate_ingredients) == 0):
+                    continue
+                forloop = 0
+                for ing in list_ingredients:
+                    ing_list = [word.strip(string.punctuation) for word in ing.split()]
+                    ing_list = [s.strip() for s in ing_list if s != '' and s!= ' '] #remove extra spaces
+                    if(len(ing_list) == 0):
+                        continue
+                    if(overlap_coefficient(ing_list, separate_ingredients) >= overlap_coefficient_rate):
+                        list_raw_n.append(ingredient)
+                        forloop = 1
+                        break
+                if(forloop == 1): continue
                 for word in separate_ingredients:
                     if word in list_ingredients:
                         list_raw_n.append(ingredient)
                         break #one keyword found is enough, put it in the list and move on
-
+        
         #POST-PR Levenshtein comparison (high complexity)
         #will approve weird "ingredients" (because farther away from Latvian lang)
         #e.g., 'kakaom rrn ppāū PIENO sikeīgi maa autoru' (n4)
@@ -154,14 +173,19 @@ for t in product_type:
                         #'vajpiena piem o7 es adalami' -> Levenshtein is high because of all of the extra words
                         if(Levenshtein.distance(ingredient, ing_animal) /len(ingredient) <= LEV_limit): #how similar should be?
                             list_raw_n.append(ingredient)
+                            list_similars.append((ingredient, ing_animal))
                             break
                         else:
                             separate_words = [word.strip(string.punctuation) for word in ingredient.split()]
                             separate_words = [s.strip() for s in separate_words if s != '' and s!= ' '] #remove extra spaces
+                            forloop = 0
                             for word in separate_words:
                                 if(Levenshtein.distance(word, ing_animal) /len(word) <= LEV_limit): #how similar should be?
                                     list_raw_n.append(ingredient)
+                                    list_similars.append((ingredient, ing_animal))
+                                    forloop = 1
                                     break
+                            if(forloop == 1): break
 
         list_check_ingr_n = []
         ing_animal_overlap = []
@@ -188,14 +212,43 @@ for t in product_type:
             
             if(t == "n"):
                 list_check_ingr_n = list_check[3].split(",") #check animal based ingredient list
-                ing_animal_missed = list_check_ingr_n
+                ing_animal_missed = list_check_ingr_n.copy()
                 for detected_ingr in list_raw_n:
+                    #print(detected_ingr)
                     if detected_ingr in list_check_ingr_n:
-                        ing_animal_overlap.append(detected_ingr)
-                        ing_animal_missed.remove(detected_ingr)
+                        try:
+                            #print("here")
+                            ing_animal_missed.remove(detected_ingr)
+                            ing_animal_overlap.append(detected_ingr)
+                            continue
+                        except ValueError:
+                            ing_animal_extra.append(detected_ingr)
                     else:
-                        ing_animal_extra.append(detected_ingr)
-       
+                        found = 0
+                        for tuple in list_similars:
+                            if(tuple[0] == detected_ingr):
+                                for ing in list_check_ingr_n:
+                                    if(tuple[1] in ing):
+                                        try:
+                                            ing_animal_missed.remove(ing)
+                                            ing_animal_overlap.append(detected_ingr)
+                                            list_similars.remove(tuple)
+                                            found = 1
+                                            break
+                                        except ValueError:
+                                            pass     
+                        if(found == 0):
+                            for ing in ing_animal_missed:
+                                if(ing in detected_ingr):
+                                    ing_animal_missed.remove(ing)
+                                    ing_animal_overlap.append(detected_ingr)
+                                    found = 1
+                            if(found == 0):
+                                ing_animal_extra.append(detected_ingr)
+        print(ing_animal_missed)
+        print(ing_animal_overlap)
+        print(list_raw_n)
+        print(list_check_ingr_n)
         print(img_name, check_nr_total, str(len(list_tru)), str(len(list_raw)), list_tru, list_raw, check_nr_n, str(len(list_raw_n)), list_check_ingr_n, list_raw_n, str(len(ing_animal_overlap)), str(len(ing_animal_missed)), str(len(ing_animal_extra)), ing_animal_overlap, ing_animal_missed, ing_animal_extra, sep = ";", file = txt_combined)
 
 txt_combined.close()

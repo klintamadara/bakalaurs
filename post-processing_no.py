@@ -1,9 +1,9 @@
 import re
 import string
 
-TXT_DIR_RAW = 'texts_raw/psm3/' # directory storing OCR result from the original images
+TXT_DIR_RAW = 'texts_processed/GS/' # directory storing OCR result from the original images
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
-TXT_DIR_RSLTS = 'results/post-processing_no_psm3.txt' #location storing all of the results
+TXT_DIR_RSLTS = 'results/post-processing_NO_FINAL.txt' #location storing all of the results
 
 #prepare animal based ingredient list
 txt_file = open("list.txt", "r", encoding='UTF-8')

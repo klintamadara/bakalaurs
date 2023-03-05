@@ -21,7 +21,6 @@ b = ["ūdens", "ols"]
 ingredient = "hello, ūdens    , cukurs)   , ol    '  ' as*, 'augi, piens (no laktozes})"
 
 separate_words = [word.strip(string.punctuation) for word in ingredient.split()]
-print(separate_words)               
 separate_words = [s.strip() for s in separate_words if s != '' and s!= ' '] #remove extra spaces
 
 print(separate_words)               

@@ -29,9 +29,9 @@ TXT_DIR = 'texts_processed/BGremove/' # directory storing OCR result from the pr
 
 product_type = ["n", "v"]
 
-#test images from 1 to 20 for both non-vegan and vegan products
+#test images from 1 to 100 for both non-vegan and vegan products
 for t in product_type:
-    for x in range(1, 21):
+    for x in range(1, 101):
         img_name = t + str(x)
         #import image
         image = cv2.imread(IMG_DIR + img_name + '.jpg')

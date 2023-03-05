@@ -7,7 +7,7 @@ TXT_DIR = 'texts_raw/' # directory storing OCR result from the original images
 #extract OCR result from raw images for samples 1-100 both non-vegan (n) and vegan (v) products
 product_type = ["n","v"]
 for t in product_type:
-    for x in range(22, 23):
+    for x in range(1, 101):
         img_name = t + str(x)
 
         #import image

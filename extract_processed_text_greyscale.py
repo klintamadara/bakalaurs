@@ -5,16 +5,14 @@ import pytesseract
 def get_grayscale(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-#testnr = 'v1'
 IMG_DIR = 'images_raw/' # directory with the original images
 IMG_DIR_AFTER = 'images_processed/GS/' #directory storing pre-processed images
 TXT_DIR = 'texts_processed/GS/' # directory storing OCR result from the pre-processed images
 
 product_type = ["n", "v"]
-
-##test images from 1 to 20 for both non-vegan and vegan products
+#test images from 1 to 20 for both non-vegan and vegan products
 for t in product_type:
-    for x in range(1, 21):
+    for x in range(1, 101):
         img_name = t + str(x)
         #import image
         image = cv2.imread(IMG_DIR + img_name + '.jpg')
