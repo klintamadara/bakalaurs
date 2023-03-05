@@ -2,9 +2,9 @@ import re
 import string
 import Levenshtein
 
-TXT_DIR_RAW = 'texts_raw/' # directory storing OCR result from the original images
+TXT_DIR_RAW = 'texts_raw/psm3/' # directory storing OCR result from the original images
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
-TXT_DIR_RSLTS = 'results/post-processing_all_1.txt' #location storing all of the results
+TXT_DIR_RSLTS = 'results/post-processing_all_1_psm3.txt' #location storing all of the results
 
 #prepare animal based ingredient list
 txt_file = open("list.txt", "r", encoding='UTF-8')
@@ -37,8 +37,13 @@ def clean_text_get_list(text):
 
     list_tru = processed.split(',') #make a list of all ingredients
     list_tru = [s.strip() for s in list_tru if s != '' and s!= ' '] #remove extra spaces
+    #remove empty ingredients
+    try:
+        while True:
+            list_tru.remove("")
+    except ValueError:
+        pass
     return list_tru
-
 
 #do post-processing for images from 1 to 20 for both non-vegan and vegan products
 product_type = ["n","v"]
@@ -113,7 +118,6 @@ for t in product_type:
             if exception in raw_processed: #if present in the text
                 raw_processed = re.sub("\w*" + exception + "\w*", "", raw_processed) #remove the whole word. Includes, e.g., "kokosriekstu piens"
 
-
         #SPLITTING into a list of ingredients
         list_raw = clean_text_get_list(raw_processed)
 
@@ -179,14 +183,13 @@ for t in product_type:
             
             if(t == "n"):
                 list_check_ingr_n = list_check[3].split(",") #check animal based ingredient list
+                ing_animal_missed = list_check_ingr_n
                 for detected_ingr in list_raw_n:
                     if detected_ingr in list_check_ingr_n:
                         ing_animal_overlap.append(detected_ingr)
+                        ing_animal_missed.remove(detected_ingr)
                     else:
                         ing_animal_extra.append(detected_ingr)
-                for ingr in list_check_ingr_n:
-                    if(ingr not in list_raw_n):
-                        ing_animal_missed.append(ingr)
        
         print(img_name, check_nr_total, str(len(list_tru)), str(len(list_raw)), list_tru, list_raw, check_nr_n, str(len(list_raw_n)), list_check_ingr_n, list_raw_n, str(len(ing_animal_overlap)), str(len(ing_animal_missed)), str(len(ing_animal_extra)), ing_animal_overlap, ing_animal_missed, ing_animal_extra, sep = ";", file = txt_combined)
 

@@ -95,6 +95,8 @@ for t in product_type:
         overlap_psm3 = str(overlap_coefficient(words_separate_psm3, words_separate_tru))
         overlap_psm6 = str(overlap_coefficient(words_separate_psm6, words_separate_tru))
         overlap_psm13 = str(overlap_coefficient(words_separate_psm13, words_separate_tru))
+
+        
         """
         Jaccard_psm3 = str(round(Jaccard_similarity(words_separate_psm3, words_separate_tru),4))
         Jaccard_psm6 = str(round(Jaccard_similarity(words_separate_psm6, words_separate_tru),4))

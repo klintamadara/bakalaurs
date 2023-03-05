@@ -4,7 +4,7 @@ import Levenshtein
 
 TXT_DIR_RAW = 'texts_raw/' # directory storing OCR result from the original images
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
-TXT_DIR_RSLTS = 'results/post-processing_all_25%.txt' #location storing all of the results
+TXT_DIR_RSLTS = 'results/post-processing_all_25%_psm6.txt' #location storing all of the results
 
 LEV_limit = 0.25 #max difference, percentage (Levenshtein distance compared to the length of the string)
 
