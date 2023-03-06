@@ -22,7 +22,7 @@ txt_combined = open(TXT_DIR_RSLTS, 'w', encoding='UTF-8')
 print("IMG;Ingr nr total - file;Ingr nr;Ingr nr identified;Ingr list;Ingr identified;Nr AB ingr - file;Nr AB ingr identified;AB ingr list - file;AB ingr list identified;Overlap (TP);Missed (FN);Extra (FP);AB ingr overlap (TP);AB ingr missed (FN);Wrongly flagged (FP)", 
 file = txt_combined)
 
-delimiters = ["(", ")", "[", "]", "{", "}", ":", "-", ";", "."]
+delimiters = ["(", ")", "[", "]", "{", "}", ":", "-", "—", ";", "."]
 #create a list from OCR text
 def clean_text_get_list(text):
     processed = re.sub("\d*[.,]?\d*\s*%", "", text) #remove 2,3% , 1.5 % utt.

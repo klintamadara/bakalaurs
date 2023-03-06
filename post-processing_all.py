@@ -1,14 +1,6 @@
 import re
 import string
 
-
-def overlap_coefficient(x,y):
-    z=set(x).intersection(set(y))
-    a=float(len(z))/min(len(x),len(y))
-    return a
-overlap_coefficient_rate = 1
-
-
 TXT_DIR_RAW = 'texts_processed/GS/' # directory storing OCR result from the original images
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
 TXT_DIR_RSLTS = 'results/post-processing_FINAL_identical.txt' #location storing all of the results
@@ -30,7 +22,7 @@ txt_combined = open(TXT_DIR_RSLTS, 'w', encoding='UTF-8')
 print("IMG;Ingr nr total - file;Ingr nr;Ingr nr identified;Ingr list;Ingr identified;Nr AB ingr - file;Nr AB ingr identified;AB ingr list - file;AB ingr list identified;Overlap (TP);Missed (FN);Extra (FP);AB ingr overlap (TP);AB ingr missed (FN);Wrongly flagged (FP)", 
 file = txt_combined)
 
-delimiters = ["(", ")", "[", "]", "{", "}", ":", "-", ";", "."]
+delimiters = ["(", ")", "[", "]", "{", "}", ":", "-", "—", ";", "."]
 #create a list from OCR text
 def clean_text_get_list(text):
     processed = re.sub("\d*[.,]?\d*\s*%", "", text) #remove 2,3% , 1.5 % utt.
@@ -132,10 +124,6 @@ for t in product_type:
                     ing_list = [s.strip() for s in ing_list if s != '' and s!= ' '] #remove extra spaces
                     if(len(ing_list) == 0):
                         continue
-                    if(overlap_coefficient(ing_list, separate_ingredients) >= overlap_coefficient_rate):
-                        list_raw_n.append(ingredient)
-                        forloop = 1
-                        break
                 if(forloop == 1): continue
                 for word in separate_ingredients:
                     if word in list_ingredients:
