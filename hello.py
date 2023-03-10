@@ -1,3 +1,42 @@
+
+"""
+def remove_neighbors(list_raw, index, i):
+    if(i == 0): i = 3
+    if(i == 1): i = 2
+    if(i == 2): i = 1
+    for k in range(0, i):
+        try:
+            list_raw.remove(index-k)
+        except IndexError:
+            pass
+        try:
+            list_raw.remove(index+k)
+        except IndexError:
+            pass
+    return list_raw
+"""
+
+
+def remove_duplicates(list_raw, list_removed, i):
+    if(list_removed == []): return list_raw
+    all_words_identified = get_all_words(list_raw)
+    
+    if(i == 0): word_count = 2
+    elif(i == 1): word_count = 1
+    elif(i == 2): word_count = 0
+    print(list_removed)
+    for word in list_removed:
+        for k in range(0, word_count):
+            try:
+                all_words_identified.remove(word)
+            except ValueError:
+                pass
+    return split_text_into_ingredients(all_words_identified, word_count + 1)
+
+
+
+
+
 """ image = cv2.imread(IMG_DIR + '3.jpg', 1)
 
 # Convert image to image gray
