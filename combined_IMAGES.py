@@ -1,4 +1,4 @@
-#testing accuracy of page segmentation modes (PSMs)
+#testing efficiency in improving OCR accuracy of different image pre-processing techniques
 import Levenshtein
 import string
 

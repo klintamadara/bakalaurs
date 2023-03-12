@@ -27,7 +27,7 @@ for t in product_type:
         custom_config = r'--oem 3 --psm 6'
 
         #extract text from preprocesed image, and store in in a text file
-        #text = pytesseract.image_to_string(image2, config=custom_config, lang='lav')
-        #sourceFile2 = open(TXT_DIR + img_name + ".txt", 'w', encoding='UTF-8')
-        #print(text, file = sourceFile2)
-        #sourceFile2.close()
+        text = pytesseract.image_to_string(image2, config=custom_config, lang='lav')
+        sourceFile = open(TXT_DIR + img_name + ".txt", 'w', encoding='UTF-8')
+        print(text, file = sourceFile)
+        sourceFile.close()
