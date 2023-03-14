@@ -1,10 +1,9 @@
 import re
-import string
 import Levenshtein
 
-TXT_DIR_RAW = 'texts_processed/GS/' # directory storing OCR result from the original images
+TXT_DIR_RAW = 'texts_processed/noiseGS/' # directory storing OCR result from the original images
 TXT_DIR_TRU = 'texts_actual/' #directory storing manually prepared correct ingredients lists -> for testing
-TXT_DIR_RSLTS = 'results/post-processing_25%_GS_notfinal.txt' #location storing all of the results
+TXT_DIR_RSLTS = 'results/post-processing_25%_noiseGS_notfinal.txt' #location storing all of the results
 
 LEV_limit = 0.25 #max difference, percentage (Levenshtein distance compared to the length of the string)
 
@@ -33,7 +32,10 @@ def remove_empty_ingredients(list):
         pass
     return list
 
-
+exact_match_exception = ["bez", "nav", "saturēt", "nesatur", "var atrasties"]
+exact_match_exception_longer = ["saturēt", "nesatur"]
+exact_match_exception_ing = ["kakao sviests", "riekstu sviests", "riekstu piens", "zirņu piens", "cūku pupas", "kakao sviesta", "riekstu sviesta", "riekstu piena", "zirņu piena", "cūku pupu", "sēklu sviests", "sēklu sviesta"]
+punctuation = "!\"#$%&'()*+,-./:;<=>?@[\]^_`{|}~”“''"
 delimiters = ["(", ")", "[", "]", "{", "}", ":", "-", "—", ";", "."]
 
 #get the actual ingredient list for validation
@@ -55,7 +57,7 @@ def clean_text_get_list(text):
 #create a list of 3-word-long-ingredients from OCR text
 def clean_text_get_list_3_word_ing(text):
     processed = re.sub("\d*[.,]?\d*\s*%", "", text) #remove 2,3% , 1.5 % utt.
-    all_words_identified = [word.strip(string.punctuation) for word in processed.split()] #split into words and remove extra chars
+    all_words_identified = [word.strip(punctuation) for word in processed.split()] #split into words and remove extra chars
     #all_words_identified = remove_empty_ingredients(all_words_identified)
     all_words_identified = [s.strip() for s in all_words_identified if s != '' and s!= ' '] #remove extra spaces and empty strings
     list = [all_words_identified[i] + " " + all_words_identified[i+1] + " " + all_words_identified[i+2] for i in range(0,len(all_words_identified)-2)]
@@ -155,7 +157,7 @@ for t in product_type:
         #POST-PR: remove all characters before "sastāvdaļas" or sastāvs
         beginning = ""
         #split text in words for processing, removing all punctuation chars if there are any on the beginning or end of the words
-        all_words_identified = [word.strip(string.punctuation) for word in raw_processed.split()]
+        all_words_identified = [word.strip(punctuation) for word in raw_processed.split()]
         all_words_identified = [s.strip() for s in all_words_identified if s != '' and s!= ' '] #remove extra spaces and empty strings
         #all_words_identified = remove_empty_ingredients(all_words_identified)
         
@@ -185,20 +187,17 @@ for t in product_type:
                     raw_processed = raw_processed.replace(word, new_E)
 
         #POST-PR. Exception handling. When mentions of animal based ingredients should be ignored
-        exact_match_exception = ["bez", "nav", "saturēt", "nesatur"]
         for exception in exact_match_exception: #assess each exception key word
             if exception in all_words_identified: #if present in the text
                 raw_processed = re.sub("\s*" + exception + "[^;.{}():-]*", "", raw_processed) #remove the whole word. Includes, e.g., "kokosriekstu piens"
 
         #POST-PR. Levenshtein Exception handling. When mentions of animal based ingredients should be ignored
-        exact_match_exception = ["saturēt", "nesatur"]
-        for exception in exact_match_exception: #assess each exception key word
+        for exception in exact_match_exception_longer: #assess each exception key word
             for word in all_words_identified:
                 if(Levenshtein.distance(word, exception) /len(exception) <= LEV_limit):
                     raw_processed = re.sub("\s*" + word + "[^;.{}():-]*", "", raw_processed) #remove the whole word. Includes, e.g., "kokosriekstu piens"
 
 
-        exact_match_exception_ing = ["kakao sviests", "riekstu sviests", "riekstu piens", "zirņu piens", "cūku pupas", "kakao sviesta", "riekstu sviesta", "riekstu piena", "zirņu piena", "cūku pupu", "sēklu sviests", "sēklu sviesta"]
         #POST-PR. Exception handling. When mentions of animal based ingredients should be ignored
         for exception in exact_match_exception_ing: #assess each exception key word
             if exception in raw_processed: #if present in the text
@@ -282,16 +281,19 @@ for t in product_type:
             if(t == "n"): #non-vegan product
                 list_check_ingr_n = list_check[3].split(",") #check animal based ingredient list
                 ing_animal_missed = list_check_ingr_n.copy() #missed - AB ingredients in the product not recognized by the solution
+                list_raw_n_reduced = list_raw_n.copy()
                 for detected_ingr in list_raw_n: #loop through all the AB ingreidents "found"
                     if detected_ingr in ing_animal_missed: #if they are actually in the product, it is a match (TP)
                         #print(detected_ingr)  
                         try:
                             ing_animal_missed.remove(detected_ingr)
                             ing_animal_overlap.append(detected_ingr)
+                            list_raw_n_reduced.remove(detected_ingr)
                             continue
                         except ValueError: #sometimes there can be dublicates, if, e.g., word is the same in several languages. Only one of the times it is a correct identification
                             ing_animal_extra.append(detected_ingr) #add as wrongly flagged ingredient
-                    else:
+                            list_raw_n_reduced.remove(detected_ingr)
+                for detected_ingr in list_raw_n_reduced:    
                         found = 0  
                         #print(ing_animal_missed)                                
                         for ing in ing_animal_missed: #maybe identified ingredient contains extra words
@@ -308,7 +310,7 @@ for t in product_type:
                                 found = 1
                                 break
                         if(found == 1): continue
-                        for tuple in list_similars: #because of OCR errors, correctly identified ingredients might have spelling mistakes
+                        """for tuple in list_similars: #because of OCR errors, correctly identified ingredients might have spelling mistakes
                             if(tuple[0] == detected_ingr and found == 0):                                
                                 for ing in ing_animal_missed: #look at the AB ingredients in the product not yet matched
                                     if((tuple[1] in ing) or (ing in tuple[1])): #if identified ingredient is one of them
@@ -317,11 +319,9 @@ for t in product_type:
                                         list_similars.remove(tuple)
                                         found = 1
                                         break
-                            if(found == 1): break
-                        #elif overlap coefficient of chars >75%?
-                        if(found == 0):
-                            ing_animal_extra.append(detected_ingr)
-        #print(ing_animal_missed)
+                            if(found == 1): break"""
+                        if(found == 0): ing_animal_extra.append(detected_ingr)
+
         print(img_name, check_nr_total, str(len(list_tru)), str(len(list_raw)), list_tru, [raw_processed], check_nr_n, str(len(list_raw_n)), list_check_ingr_n, list_raw_n, str(len(ing_animal_overlap)), str(len(ing_animal_missed)), str(len(ing_animal_extra)), ing_animal_overlap, ing_animal_missed, ing_animal_extra, sep = ";", file = txt_combined)
 
 txt_combined.close()

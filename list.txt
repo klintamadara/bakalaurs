@@ -202,7 +202,6 @@ kaulu
 kauls
 kaula
 kašmira
-karotīns
 karmīnskābe
 karmīns
 karminisks
@@ -239,6 +238,7 @@ haizivs
 haizivju
 h vitamīns
 guanīns
+govs piens
 govs
 glikrēts-26
 gliemežu
@@ -275,12 +275,14 @@ divpadsmitpirkstu zarnas
 dimetilstearamīns
 desa
 dekspantenols
+čedaras siers
 čedaras
 cūku tauki
 cūku
 cūkgaļa
 cūkas
 cūka
+clupea harengus 
 clupea harengus membras
 cistīns
 cetilspirts
